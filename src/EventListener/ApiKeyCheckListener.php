@@ -4,6 +4,7 @@
 
 namespace App\EventListener;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class ApiKeyCheckListener
@@ -14,13 +15,11 @@ class ApiKeyCheckListener
     {
         $request = $event->getRequest();
 
-        // Check if the request is for an API route (you might adjust this condition based on your API routes)
-        if (strpos($request->getPathInfo(), '/api') === 0) {
-            $apiKey = $request->headers->get('X-API-KEY'); // Assuming the API key is passed in the header
+        $apiKey = $request->headers->get('X-API-KEY'); // Assuming the API key is passed in the header
 
-            if (!$this->isValidApiKey($apiKey)) {
-                throw new \Exception('Invalid API key', 403); // You can throw an exception or handle this according to your needs
-            }
+        if (!$this->isValidApiKey($apiKey)) {
+            $response = new JsonResponse(['success' => false, 'error' => 'Invalid API key'], 403);
+                $event->setResponse($response);
         }
     }
 
