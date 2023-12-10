@@ -1,23 +1,6 @@
 version: "3.8"
 
 services:
-  mysql:
-    image: mysql:latest
-    container_name: mysql_${APP_ENV}
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: commpeak
-      MYSQL_DATABASE: commpeak
-      MYSQL_USER: commpeak
-      MYSQL_PASSWORD: commpeak
-    ports:
-      - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 3s
-      retries: 30
-
   api:
     build:
       context: .
@@ -30,9 +13,6 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-    depends_on:
-      mysql:
-        condition: service_healthy
 
   queue_worker:
     build:

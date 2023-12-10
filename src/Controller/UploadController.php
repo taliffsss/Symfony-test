@@ -64,7 +64,7 @@ class UploadController extends AbstractController
                         'phone' => $row[3],
                         'ipaddress' => $row[4],
                         'num_region' => $this->getContinentFromCountryCode(substr($row[3], 0, 3)),
-                        'ip_region' => "AS",//$this->getGeolocationData($row[4]),
+                        'ip_region' => $this->getGeolocationData($row[4]),
                     ];
 
                     if (count($batch) >= $batchSize) {
