@@ -29,6 +29,7 @@ services:
       - .:/var/www/html
     env_file:
       - .env
+    restart: unless-stopped
     depends_on:
       mysql:
         condition: service_healthy
@@ -41,5 +42,6 @@ services:
     volumes:
       - .:/var/www/html
     command: php bin/console messenger:consume async -vv
+    restart: unless-stopped
     depends_on:
       - api
